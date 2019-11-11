@@ -21,4 +21,12 @@ export class ContactRepository extends Repository<ContactEntity> {
       return null;
     }
   }
+
+  updateContact(contactEntity: ContactEntity): Promise<ContactEntity> {
+    try {
+      return this.save(contactEntity);
+    } catch (e) {
+      return null;
+    }
+  }
 }

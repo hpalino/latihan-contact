@@ -1,11 +1,19 @@
-export class ResponseDto<T = any> {
-  message: string;
+export class Datas<T> {
   data: T;
-  status: number
+  message: string;
 
-  constructor(status: number, message: string, data: T = null) {
-    this.status = status;
+  constructor(message: string, data?) {
     this.message = message;
     this.data = data;
+  }
+}
+
+export class ResponseDto<T = any> {
+  status: number;
+  datas: Datas<T>;
+
+  constructor(status: number, message: string, data?) {
+    this.status = status;
+    this.datas = new Datas<T>(message, data);
   }
 }

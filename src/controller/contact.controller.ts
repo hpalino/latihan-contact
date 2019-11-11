@@ -33,7 +33,7 @@ export class ContactController {
 
   @Post()
   @ApiOperation({title: 'Save contact'})
-  @ApiResponse({status: 200, description: 'Ok', type: ResponseNodataSwagger})
+  @ApiResponse({status: 201, description: 'Created', type: ResponseNodataSwagger})
   @ApiResponse({status: 400, description: 'Bad Request', type: ResponseNodataSwagger})
   @ApiResponse({status: 500, description: 'Internal Error'})
   async createContact(@Res() resp: Response, @Body() createDto: CreateContactDto): Promise<Response> {
@@ -62,7 +62,7 @@ export class ContactController {
   }
 
   @Put(':id')
-  @ApiOperation({title: 'Delete Contact'})
+  @ApiOperation({title: 'Edit Contact'})
   @ApiResponse({status: 201, description: 'Created', type: ResponseDataSwagger})
   @ApiResponse({status: 400, description: 'Bad Request', type: ResponseNodataSwagger})
   @ApiResponse({status: 500, description: 'Internal Error'})
@@ -74,7 +74,7 @@ export class ContactController {
   private customResponse(response: Response, responseDto: ResponseDto): Response {
     if (responseDto) {
       response.status(responseDto.status);
-      response.send(responseDto.data ? responseDto.data : '');
+      response.send(responseDto.datas ? responseDto.datas : '');
     } else {
       response.status(HttpStatus.INTERNAL_SERVER_ERROR);
       response.send('');

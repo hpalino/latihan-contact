@@ -25,8 +25,8 @@ export class ContactService {
     const contact: ContactEntity = new ContactEntity();
     contact.firstName = createDto.firstName;
     contact.lastName = createDto.lastName;
-    contact.age = contact.age;
-    contact.photo = contact.photo;
+    contact.age = createDto.age;
+    contact.photo = createDto.photo;
 
     if (await this.contactRepository.saveContact(contact)) {
       return new ResponseDto(HttpStatus.CREATED, 'Success!');
@@ -36,15 +36,15 @@ export class ContactService {
 
   async getContactById(contactId: string): Promise<ResponseDto<ContactDto>> {
     const contactEntity: ContactEntity = await this.contactRepository.findById(contactId);
-    if (contactEntity) {
+    if (!contactEntity) {
       return new ResponseDto(HttpStatus.BAD_REQUEST, `data id ${contactId} is not in contact list`);
     }
-    return new ResponseDto<ContactDto>(HttpStatus.BAD_REQUEST, `data id ${contactId} is not in contact list`);
+    return new ResponseDto<ContactDto>(HttpStatus.OK, 'Get Contact by id', this.convertEntityToDto(contactEntity));
   }
 
   async deleteContactById(contactId: string): Promise<ResponseDto<ContactDto>> {
     const contactEntity: ContactEntity = await this.contactRepository.findById(contactId);
-    if (contactEntity) {
+    if (!contactEntity) {
       return new ResponseDto(HttpStatus.BAD_REQUEST, 'contact unavailable');
     }
 
@@ -69,7 +69,7 @@ export class ContactService {
       contactEntity.photo = createDto.photo;
     }
 
-    if (await this.contactRepository.saveContact(contactEntity)) {
+    if (await this.contactRepository.updateContact(contactEntity)) {
       return new ResponseDto<ContactDto>(HttpStatus.CREATED, 'Contact edited', contactEntity);
     } else {
       return new ResponseDto(HttpStatus.BAD_REQUEST, 'Failed!');
